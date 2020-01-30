@@ -41,7 +41,24 @@ class Airplane {
 */
 
 class Person {
-
+    constructor(gName,gAge){
+      this.name = gName;
+      this.age = gAge;
+      this.stomach = [];
+    }
+    eat(gFood){
+      if(this.stomach.length > 9){
+        return (this.stomach.length == 9);
+      } else {
+        return this.stomach.push(gFood);
+      }
+    };
+    poop(){
+      return (this.stomach = []);
+    };
+    toString(){
+      return `${this.name}, ${this.age}`;
+    }
 }
 
 /*
@@ -59,8 +76,28 @@ class Person {
 */
 
 class Car {
-
-}
+  constructor(gModel,gMPG){
+    this.model = gModel;
+    this.milesPerGallon = gMPG;
+    this.tank = 0;
+    this.odometer = 0;
+  }
+  fill(gallons){
+    return this.tank += gallons;
+  };
+  drive(distanceWanted){
+    const gasNeeded = distanceWanted / this.milesPerGallon;
+    const distancePossible = this.tank * this.milesPerGallon; 
+    if(this.tank >= gasNeeded){
+      this.odometer = distanceWanted;
+      this.tank -= gasNeeded;
+    } else {
+      this.odometer = distancePossible;
+      this.tank = 0;
+      return `I ran out of fuel at ${this.odometer}`;
+    }
+  }
+};
 
 /*
   TASK 3
@@ -75,7 +112,14 @@ class Car {
         + {name} and {location} of course come from the instance's own properties.
 */
 class Lambdasian {
-
+constructor(gKeys){
+  this.name = gKeys.name;
+  this.age = gKeys.age;
+  this.location = gKeys.location;
+}
+  speak(){
+    return `Hello my name is ${this.name}, I am from ${this.location}`;
+  }
 }
 
 /*
@@ -92,7 +136,26 @@ class Lambdasian {
         + `demo` receives a `subject` string as an argument and returns the phrase 'Today we are learning about {subject}' where subject is the param passed in.
         + `grade` receives a `student` object and a `subject` string as arguments and returns '{student.name} receives a perfect score on {subject}'
 */
-class Instructor {
+class Instructor extends Lambdasian {
+  constructor(gKeys){
+    super(gKeys)
+    this.specialty = gKeys.specialty;
+    this.favLanguage = gKeys.favLanguage;
+    this.catchPhrase = gKeys.catchPhrase;
+  }
+  demo(subject){
+    return `Today we are learning about ${subject}`;
+  }
+  grade(student,subject){  
+    student.grade += (Math.floor(Math.random() * 50) + 1) * (Math.round(Math.random()) * 2 - 1);
+    if(student.grade < 0){
+      student.grade = 0;
+    } else if (student.grade > 100){
+      student.grade = 100;
+    }
+    console.log(`${this.name} is grading ${student.name}"s performance in ${subject} and now their grade is ${student.grade},`);
+    return `${student.name} receives a perfect score in ${subject}` ;
+  }
 
 }
 
@@ -111,7 +174,35 @@ class Instructor {
         + `PRAssignment` a method that receives a subject as an argument and returns `student.name has submitted a PR for {subject}`
         + `sprintChallenge` similar to PRAssignment but returns `student.name has begun sprint challenge on {subject}`
 */
-class Student {
+class Student extends Lambdasian{
+  constructor(gKeys){
+    super(gKeys);
+    this.previousBackground = gKeys.previousBackground;
+    this.className = gKeys.className;
+    this.favSubjects = gKeys.favSubjects;
+    this.grade = Math.floor(Math.random() * 100) + 1;
+  }
+  listSubjects(){
+    return `Loving ${this.favSubjects}`;
+  }
+  PRAssignment(subject){
+    return `${this.name} has submitted a PR for ${subject}`;
+  }
+  sprintChallenge(subject){
+    return `${this.name} has begun sprint challenge on ${subject}`
+  }
+  graduate(instructor,subject){
+    if(this.grade >= 70){
+      console.log(`${this.name} has graduated from Lambda School`);
+      return `${this.name} has graduated from Lambda School`;
+    } else { 
+      do{
+       instructor.grade(this,subject);     
+    } while(this.grade < 70);
+      console.log(`${this.name} has graduated from Lambda School`);
+      return `${this.name} has graduated from Lambda School`;
+    }
+  }
 
 }
 
@@ -128,8 +219,18 @@ class Student {
         + `standUp` a method that takes in a slack channel and returns `{name} announces to {channel}, @channel standy times!`
         + `debugsCode` a method that takes in a student object and a subject and returns `{name} debugs {student.name}'s code on {subject}`
 */
-class ProjectManager {
-
+class ProjectManager extends Instructor{
+  constructor(gKeys){
+    super(gKeys);
+    this.gradClassName = gKeys.gradClassName;
+    this.favInstructor = gKeys.favInstructor;
+  }
+  standUp(channel){
+    return `${this.name} announces to ${channel}, @channel standy times!`;
+  }
+  debugsCode(student,subject){
+    return `${this.name} debugs ${student.name}'s code on ${subject}`;
+  }
 }
 
 /*
